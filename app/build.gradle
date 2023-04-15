@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.ryotashona.myapplication'
+    namespace 'com.ryotashona.itlink'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.ryotashona.myapplication"
+        applicationId "com.ryotashona.itlink"
         minSdk 24
         targetSdk 33
         versionCode 1

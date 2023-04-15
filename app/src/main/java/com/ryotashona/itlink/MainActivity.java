@@ -1,4 +1,4 @@
-package com.ryotashona.myapplication;
+package com.ryotashona.itlink;
 
 import android.app.AlertDialog;
 import android.content.Intent;
