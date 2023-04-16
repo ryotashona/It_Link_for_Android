@@ -1,6 +1,5 @@
 package com.ryotashona.itlink;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -93,18 +93,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendDataToServer() {
-        // 仮実装
         String sharedUrl = mSharedUrlTextView.getText().toString();
         String sharedTitle = mSharedTitleTextView.getText().toString();
         String comment = mCommentEditText.getText().toString();
 
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(this);
-        String msg = "URL:" + sharedUrl + "\n";
-        msg += "title:" + sharedTitle + "\n";
-        msg += "comment:" + comment;
-        builder.setMessage(msg);
-        builder.create();
-        builder.show();
+        // 仮実装:Android標準の共有機能で代替
+        String msg = "";
+        msg += "comment: " + comment+"\n";
+        msg += "title: " + sharedTitle + "\n";
+        msg += "URL: " + sharedUrl + "\n";
+
+        ShareCompat.IntentBuilder builder
+                = new ShareCompat.IntentBuilder(MainActivity.this);
+        builder.setText(msg)
+                .setType("text/plain");
+        builder.createChooserIntent();
+        builder.startChooser();
     }
 }
