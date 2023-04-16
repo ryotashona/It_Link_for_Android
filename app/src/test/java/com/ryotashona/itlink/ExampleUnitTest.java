@@ -1,4 +1,4 @@
-package com.ryotashona.myapplication;
+package com.ryotashona.itlink;
 
 import org.junit.Test;
 
