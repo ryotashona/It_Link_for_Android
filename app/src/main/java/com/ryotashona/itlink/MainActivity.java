@@ -35,11 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedUrlTextView = findViewById(R.id.shared_url);
         mSharedTitleTextView = findViewById(R.id.shared_title);
-        mCommentEditText = findViewById(R.id.comment_edittext);
-        Button mSendButton = findViewById(R.id.send_button);
-
         handleIntent(getIntent());
 
+        mCommentEditText = findViewById(R.id.comment_edittext);
+        Button mClearButton = findViewById(R.id.clear_button);
+        mClearButton.setOnClickListener(l -> {
+            mCommentEditText.setText("");
+        });
+
+        Button mSendButton = findViewById(R.id.send_button);
         mSendButton.setOnClickListener(v -> sendDataToServer());
     }
 
