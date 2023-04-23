@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 
+import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
@@ -17,9 +18,10 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
+import org.jsoup.nodes.Element;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,7 +82,17 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         assert response.body() != null;
-                        String html = response.body().string();
+
+                        // 一旦バイトコードで取得
+                        byte[] contentBytes = response.body().bytes();
+
+                        // 文字コード取得
+                        Charset encoding = getCharset(response.body(), contentBytes);
+
+                        // バイトコードから取得した文字コードでデコード
+                        String html = new String(contentBytes, encoding);
+
+                        // タイトル解析
                         Document doc = Jsoup.parse(html);
                         String title = Objects.requireNonNull(doc.head().select("title").first()).text();
                         future.complete(title);
@@ -94,6 +106,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return future;
+    }
+
+    private Charset getCharset(@NonNull ResponseBody body, byte[] contentBytes) {
+        Charset encoding = Charset.forName("UTF-8");
+        if (body.contentType() != null && body.contentType().charset() != null) {
+            return body.contentType().charset();
+        }
+        String content = new String(contentBytes, encoding);
+        Document doc = Jsoup.parse(content);
+        Element metaCharset = doc.select("meta[http-equiv=Content-Type]").first();
+        String charset = "UTF-8";
+        if (metaCharset != null) {
+            String contentAttr = metaCharset.attr("content");
+            charset = contentAttr.replaceAll("(?i).*charset=([a-zA-Z0-9-_]+).*", "$1");
+        }
+
+        return Charset.forName(charset);
     }
 
     private void sendDataToServer() {
