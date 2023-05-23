@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mSharedUrlTextView = findViewById(R.id.shared_url);
+        mSharedUrlTextView.setText("");
         mSharedTitleTextView = findViewById(R.id.shared_title);
+        mSharedTitleTextView.setText("");
         handleIntent(getIntent());
 
         mCommentEditText = findViewById(R.id.comment_edittext);
