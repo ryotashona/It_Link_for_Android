@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 仮実装:Android標準の共有機能で代替
         String msg = "";
-        msg += "comment: " + comment+"\n";
-        msg += "title: " + sharedTitle + "\n";
+        msg += "Comment: " + comment+"\n\n";
+        msg += "Title: " + sharedTitle + "\n";
         msg += "URL: " + sharedUrl + "\n";
 
         ShareCompat.IntentBuilder builder
